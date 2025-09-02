@@ -11,3 +11,111 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* Background layout */
+.upload-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #0d0d0f, #141622, #0a0a0f);
+  color: #fff;
+  padding: 20px;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Form container */
+.upload-form {
+  background: rgba(20, 20, 30, 0.8);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 0 25px rgba(0, 255, 200, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+/* Dropzone */
+.dropzone {
+  position: relative;
+  display: block;
+  background: rgba(30, 30, 45, 0.7);
+  border: 2px dashed rgba(0, 200, 255, 0.6);
+  border-radius: 1rem;
+  padding: 2rem 1rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.dropzone:hover {
+  border-color: #39ff14;
+  box-shadow: 0 0 20px rgba(57, 255, 20, 0.3);
+}
+
+.dropzone input {
+  display: none;
+}
+
+.dropzone-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  color: #b0b0d0;
+  font-size: 0.95rem;
+}
+
+.dropzone-icon {
+  font-size: 2rem;
+  color: #00f0ff;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+}
+
+/* Submit button */
+.submit-btn {
+  background: linear-gradient(90deg, #00f0ff, #7f00ff, #39ff14);
+  background-size: 300% 300%;
+  color: #fff;
+  border: none;
+  border-radius: 2rem;
+  padding: 0.9rem 2rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.4s ease;
+  box-shadow: 0 0 20px rgba(0, 200, 255, 0.4);
+  animation: gradientShift 5s infinite linear;
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 25px rgba(127, 0, 255, 0.7);
+}
+
+/* Gradient animation */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+  .upload-form {
+    padding: 1.5rem;
+  }
+
+  .dropzone {
+    padding: 1.5rem 0.75rem;
+  }
+
+  .submit-btn {
+    font-size: 0.9rem;
+    padding: 0.8rem 1.5rem;
+  }
+}

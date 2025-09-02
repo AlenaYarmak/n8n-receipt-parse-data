@@ -3,6 +3,7 @@ import { useState } from 'react'
 const ReceiptForm = () => {
 
     const [file, setFile] = useState(null);
+    const [notification, setNotification] = useState("");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -17,17 +18,24 @@ const ReceiptForm = () => {
         });
     };
     return (
-        <form onSubmit={handleSubmit} className="upload-form">
-            <label>
-                Upload receipt
-                <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => setFile(e.target.files[0])}
-                />
-            </label>
-            <button type="submit">Send</button>
-        </form>
+        <div className="upload-page">
+            <form onSubmit={handleSubmit} className="upload-form">
+                <label className="dropzone">
+                    <div className="dropzone-content">
+                        <span className="dropzone-icon">📷</span>
+                        <p>{file ? file.name : "Upload receipt photo"}</p>
+                    </div>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => setFile(e.target.files[0])}
+                    />
+                </label>
+                <button type="submit" className="submit-btn">
+                    Send
+                </button>
+            </form>
+        </div>
     )
 }
 
