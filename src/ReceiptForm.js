@@ -7,6 +7,11 @@ const ReceiptForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!file) {
+            setNotification("⚠️ Please upload a receipt first.");
+        } else {
+            setNotification("✅ Receipt submitted successfully!");
+        }
         if (!file) return;
 
         const formData = new FormData();
@@ -19,6 +24,9 @@ const ReceiptForm = () => {
     };
     return (
         <div className="upload-page">
+
+            {notification && <div className="notification">{notification}</div>}
+
             <form onSubmit={handleSubmit} className="upload-form">
                 <label className="dropzone">
                     <div className="dropzone-content">

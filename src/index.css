@@ -119,3 +119,29 @@ code {
     padding: 0.8rem 1.5rem;
   }
 }
+
+
+/* Notification toast */
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(30, 30, 45, 0.9);
+  border: 1px solid rgba(0, 255, 200, 0.8);
+  border-radius: 1rem;
+  padding: 0.8rem 1.2rem;
+  font-size: 0.95rem;
+  color: #00f0ff;
+  text-shadow: 0 0 8px rgba(0, 255, 255, 0.9);
+  box-shadow: 0 0 15px rgba(0, 200, 255, 0.4);
+  z-index: 1000;
+  animation: fadeInOut 3s ease forwards;
+}
+
+/* Animation */
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateY(-10px); }
+  10% { opacity: 1; transform: translateY(0); }
+  90% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-10px); }
+}
