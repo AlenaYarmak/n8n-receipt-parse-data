@@ -7,20 +7,25 @@ const ReceiptForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!file) {
-            setNotification("⚠️ Please upload a receipt first.");
-        } else {
-            setNotification("✅ Receipt submitted successfully!");
-        }
-        if (!file) return;
-
         const formData = new FormData();
         formData.append("file", file);
+
+        if (!file) {
+            setNotification("⚠️ Please upload a receipt first.");
+            return
+        } else {
+            console.log('clicked');
+            console.log(notification);
+            setNotification("✅ Receipt submitted successfully!");
+        }
 
         await fetch("https://n8n.us2h.com/webhook-test/check-upload", {
             method: "POST",
             body: formData,
         });
+        
+        setFile(null);
+        setNotification("");
     };
     return (
         <div className="upload-page">
