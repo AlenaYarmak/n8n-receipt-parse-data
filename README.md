@@ -78,3 +78,9 @@ The workflow leverages n8n, OpenAI, and Google Sheets to provide a simple, effic
 ## 🌟 Why This Matters
 
 This workflow turns unstructured receipt images into structured, usable data—helping automate expense tracking, financial reporting, and digital record-keeping.
+
+---
+
+## 📄 Download or View the Workflow
+
+👉 [Click here to view `workflow.json`](./workflow/workflow.json)
