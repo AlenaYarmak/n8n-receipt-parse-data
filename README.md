@@ -26,10 +26,15 @@ The workflow leverages n8n, OpenAI, and Google Sheets to provide a simple, effic
 ## 🔄 Workflow Overview
 
 - **Input**: Receipt photo (via form or Postman)
+  
 ![Alt Text](https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExamtuczk3bHp2cTg0cGIzN3U1bHBrMGdyNXBlMHU0b3cyYmh4d3psMCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/5ZESByWV9MMz7nvpUC/giphy.gif)
+
 - **Processing**: OpenAI API extracts receipt details
+
 ![Alt Text](https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExeW43Z3h1MHI0djN5bXdxbGo2MTRmcXB6cnppbGwzZzRueGE4MXBnMCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/iVg4h9gkt2Xu9AsygT/giphy.gif)
+
 - **Output**: Structured data + photo name stored in Google Sheets
+
 ![Alt Text](https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExMDdrOTY3NnUxeW9kaHY4ZWI3eHI3ZWp4OXpnc2J4N3RnMjF0M21zaiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3ZAGD0kxybd1zvj3tD/giphy.gif)
 
 
