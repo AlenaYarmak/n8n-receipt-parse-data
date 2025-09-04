@@ -1,0 +1,316 @@
+{
+  "name": "Receipt Data Extraction",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "check-upload",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Headers",
+                "value": "Content-Type"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "3f2d1df9-d490-4813-a4b9-fd723822f7bc",
+      "name": "Webhook",
+      "webhookId": "806e74ae-23d5-4049-a5f0-94276627f6cd"
+    },
+    {
+      "parameters": {
+        "jsCode": "const file = $(\"Webhook\").first().binary.file;\nconst base64Image = file.data;      \nconst mimeType = file.mimeType;\n\nconst imageUrl = `data:${mimeType};base64,${base64Image}`;\n\nreturn {\n  imageUrl\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        192,
+        0
+      ],
+      "id": "adc216fa-18cb-4c10-bb89-3178b62d1507",
+      "name": "Create image url"
+    },
+    {
+      "parameters": {
+        "jsCode": "let aiResponse = $input.first().json.AIResponse;\naiResponse = aiResponse\n  .replace(/([{,]\\s*)([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*:/g, '$1\"$2\":')\n  .replace(/:\\s*([0-9-]+)\\s*([,}])/g, ': \"$1\"$2');\n\nconst parsedResponse = JSON.parse(aiResponse);\nreturn { \n  amount: parsedResponse.amount, \n  date: parsedResponse.date \n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        768,
+        0
+      ],
+      "id": "f2dde814-bee0-4a71-9cb6-3b7d86ce4c4c",
+      "name": "Parse object"
+    },
+    {
+      "parameters": {
+        "jsCode": "const file = $(\"Webhook\").first().binary.file;\nconst nameImage = file.fileName;      \n\nreturn { nameImage }"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        208
+      ],
+      "id": "96e33cf9-1110-4296-802e-1dacd093b233",
+      "name": "Pass image name"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/responses",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"gpt-4.1-mini\",\n  \"input\": [\n    {\n        \"role\": \"system\",\n        \"content\": \"You are a helpful assistant that parse data from receipt.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": [\n        {\n          \"type\": \"input_text\",\n          \"text\": \"Return the final amount on the receipt and the date of purchase in object format. Example {amount: parced amount, date: parced data}. Return the object strictly in this format, do not add anything outside the curly braces and dont add any symbols inside.\"\n        },\n        {\n          \"type\": \"input_image\",\n          \"image_url\": \"{{ $json.imageUrl }}\"\n        }\n      ]\n    }\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        384,
+        0
+      ],
+      "id": "58253122-acc9-4a0e-a801-5494de2d5468",
+      "name": "HTTP Request to OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "bOzxywZ1t32d5a2S",
+          "name": "OpenAi account 2"
+        },
+        "httpHeaderAuth": {
+          "id": "3H0buelzZ8sRlmut",
+          "name": "Header Auth openai"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4d2f2029-7203-46d0-a174-dfe17b9f5ee0",
+              "name": "AIResponse",
+              "value": "={{ $json.output[0].content[0].text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        576,
+        0
+      ],
+      "id": "8873a8f8-345e-4481-9ed8-aecba9dedf52",
+      "name": "Save response"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        640,
+        224
+      ],
+      "id": "f3954a88-e92a-46e2-86e9-dafd938374e2",
+      "name": "Merge data"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1BbEDbM90QZsRAKifnFDu-AEMFgy2IWENpoBvsczTPL4",
+          "mode": "list",
+          "cachedResultName": "Receipt data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BbEDbM90QZsRAKifnFDu-AEMFgy2IWENpoBvsczTPL4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BbEDbM90QZsRAKifnFDu-AEMFgy2IWENpoBvsczTPL4/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.nameImage }}",
+            "Data": "={{ $json.date }}",
+            "Amount": "={{ $json.amount }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Amount",
+              "displayName": "Amount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Data",
+              "displayName": "Data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        864,
+        224
+      ],
+      "id": "5572a2e5-df64-490a-a109-73248bebe3fa",
+      "name": "Save data in google sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "DTzmE2tPJySUCn9U",
+          "name": "Google Sheets account 3"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Create image url",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Pass image name",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create image url": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request to OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse object": {
+      "main": [
+        [
+          {
+            "node": "Merge data",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Pass image name": {
+      "main": [
+        [
+          {
+            "node": "Merge data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request to OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Save response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save response": {
+      "main": [
+        [
+          {
+            "node": "Parse object",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge data": {
+      "main": [
+        [
+          {
+            "node": "Save data in google sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "378fcab0-72d0-4d8c-a830-38a540e2eab4",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "8b4c3aa613ccadba79b0266131eeaa5b2667b6f335ded7eeb2c5674ffd25dafa"
+  },
+  "id": "yOM41hhHbwFveBUd",
+  "tags": []
+}
