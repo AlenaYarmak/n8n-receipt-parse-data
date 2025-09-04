@@ -1,70 +1,75 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# 🧾 Receipt Data Extraction Workflow (n8n + OpenAI + Google Sheets)
 
-## Available Scripts
+This project demonstrates an automated workflow for extracting structured data from a receipt photo and saving it into a Google Sheet for further analysis and manipulation.
 
-In the project directory, you can run:
+The workflow leverages n8n, OpenAI, and Google Sheets to provide a simple, efficient, and reproducible process.
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 🚀 How It Works
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+1. Trigger (Image Upload)
+- A receipt photo is uploaded through a simple frontend form (or can be tested via Postman).
+- This upload triggers the n8n workflow.
+2. Data Extraction with OpenAI
+- The image is passed to the OpenAI API via the HTTP Request node.
+- OpenAI processes the receipt and returns data in a structured, object-like string format.
+3. Data Transformation
+- The response string is parsed into a proper JSON object.
+- Receipt metadata (e.g., uploaded file name) is merged with extracted data.
+4. Data Storage
+- Final structured data is saved directly into a Google Sheet, enabling easy access, filtering, and manipulation.
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🔄 Workflow Overview
 
-### `npm run build`
+- **Input**: Receipt photo (via form or Postman)
+![Alt Text](https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExamtuczk3bHp2cTg0cGIzN3U1bHBrMGdyNXBlMHU0b3cyYmh4d3psMCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/5ZESByWV9MMz7nvpUC/giphy.gif)
+- **Processing**: OpenAI API extracts receipt details
+![Alt Text](https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExeW43Z3h1MHI0djN5bXdxbGo2MTRmcXB6cnppbGwzZzRueGE4MXBnMCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/iVg4h9gkt2Xu9AsygT/giphy.gif)
+- **Output**: Structured data + photo name stored in Google Sheets
+![Alt Text](https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExMDdrOTY3NnUxeW9kaHY4ZWI3eHI3ZWp4OXpnc2J4N3RnMjF0M21zaiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3ZAGD0kxybd1zvj3tD/giphy.gif)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## 🛠️ Tech Stack
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- **n8n** - Workflow automation platform
+- **OpenAI API** - AI-powered text extraction
+- **Google Sheet** - Data storage and management
+- **Frontend Form / Postman** - Trigger for workflow execution
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## 📸 Example Use Case
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- Upload a receipt photo (e.g., restaurant, store purchase).
+- Workflow extracts:
 
-## Learn More
+```
+{
+  "fileName": "DCIM101",
+  "amount": "104.6",
+  "date": "24-05-25"
+}
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- Data is saved in Google Sheets for expense tracking or accounting.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+## 📖 Notes
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- The workflow is fully customizable—modify the prompt to extract additional receipt details.
 
-### Analyzing the Bundle Size
+- Use filters and formulas inside Google Sheets to further analyze extracted data.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+--- 
 
-### Making a Progressive Web App
+## 🌟 Why This Matters
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This workflow turns unstructured receipt images into structured, usable data—helping automate expense tracking, financial reporting, and digital record-keeping.
